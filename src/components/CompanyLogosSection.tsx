@@ -1,9 +1,11 @@
+import { asset } from '../lib/asset';
+
 const DEFAULT_LOGOS = [
   '/hissaria gems private limited.webp',
   '/Mahalaxmi.webp',
   '/BTR.webp',
   '/b l hissaria jewellers.webp',
-  '/Cris.png',
+  '/Cris-v2.png',
   '/Bhagwati Ayurveda & Panchakarma Research Centre.webp',
   '/Parmeshwari Newborn & Children Hospital - Abohar.webp',
   '/Skyy High Placement.webp',
@@ -32,7 +34,7 @@ export default function CompanyLogosSection({
               className="flex h-24 w-44 shrink-0 items-center justify-center p-1.5 sm:h-28 sm:w-52 md:h-32 md:w-56"
             >
               <img
-                src={src}
+                src={asset(src)}
                 alt="Client logo"
                 loading="lazy"
                 decoding="async"
@@ -50,7 +52,7 @@ export default function CompanyLogosSection({
               className="flex h-24 w-44 shrink-0 items-center justify-center p-1.5 sm:h-28 sm:w-52 md:h-32 md:w-56"
             >
               <img
-                src={src}
+                src={asset(src)}
                 alt="Client logo"
                 loading="lazy"
                 decoding="async"

@@ -4,6 +4,7 @@ import { modules } from '../data/productMatrix';
 import ProductRelatedArticles from '../components/ProductRelatedArticles';
 import CompanyLogosSection from '../components/CompanyLogosSection';
 import { Link } from 'react-router-dom';
+import { asset } from '../lib/asset';
 
 export default function XJewelERP() {
   return (
@@ -32,7 +33,7 @@ function HeroSection() {
       <div className="relative xl:hidden">
         <div className="relative min-h-[min(560px,calc(100svh-var(--site-header-height)))] overflow-hidden sm:min-h-[min(620px,calc(100svh-var(--site-header-height)))]">
           <img
-            src="/jewelbiz-hero-bg-1920.webp"
+            src={asset('/jewelbiz-hero-bg-1920-v2.webp')}
             alt=""
             width={1920}
             height={789}
@@ -91,7 +92,7 @@ function HeroSection() {
       {/* —— Desktop (≥1280): keep full laptop analytics in frame —— */}
       <div className="relative hidden min-h-[min(700px,calc(100svh-var(--site-header-height)))] xl:grid xl:grid-cols-2 2xl:min-h-[min(760px,calc(100svh-var(--site-header-height)))]">
         <img
-          src="/jewelbiz-hero-bg.webp"
+          src={asset('/jewelbiz-hero-bg-v2.webp')}
           alt=""
           width={1956}
           height={804}
@@ -349,7 +350,7 @@ function FeaturesSection() {
 function BusinessModelSectionWithImages() {
   const cards = [
     {
-      image: '/retail jewelbiz.webp',
+      image: asset('/retail jewelbiz.webp'),
       alt: 'Retail POS',
       title: 'Retail POS',
       description:
@@ -357,7 +358,7 @@ function BusinessModelSectionWithImages() {
       href: '#features',
     },
     {
-      image: '/wholesale jewelbiz.webp',
+      image: asset('/wholesale jewelbiz.webp'),
       alt: 'Wholesale & approval',
       title: 'Wholesale & approval',
       description:
@@ -365,7 +366,7 @@ function BusinessModelSectionWithImages() {
       href: '#features',
     },
     {
-      image: '/manufacturing jewelbiz.webp',
+      image: asset('/manufacturing jewelbiz.webp'),
       alt: 'Manufacturing',
       title: 'Manufacturing',
       description:
@@ -577,7 +578,7 @@ function AccreditationSection() {
               }}
             >
               <img
-                src="/acc jewelbiz.webp"
+                src={asset('/acc jewelbiz.webp')}
                 alt="JewelBiz order and production tracking"
                 loading="lazy"
                 decoding="async"
@@ -602,7 +603,8 @@ function AccreditationSection() {
 function CTASection() {
   return (
     <section
-      className="relative flex w-full items-center justify-center overflow-hidden bg-[url('/herobg.webp')] bg-cover bg-center bg-no-repeat min-h-[480px] py-16 sm:min-h-[560px] sm:py-20 md:min-h-[720px] md:py-24"
+      className="relative flex w-full items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat min-h-[480px] py-16 sm:min-h-[560px] sm:py-20 md:min-h-[720px] md:py-24"
+      style={{ backgroundImage: `url('${asset('/herobg.webp')}')` }}
     >
       <div className="relative z-10 mx-auto w-full max-w-[1180px] px-4 text-center sm:px-6 lg:px-8">
         <h2 className="font-serif font-normal leading-[1.1] tracking-[-0.02em] text-slate-900">

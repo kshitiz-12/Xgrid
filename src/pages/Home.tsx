@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CompanyLogosSection from '../components/CompanyLogosSection';
+import { asset } from '../lib/asset';
 
 export default function Home() {
   return (
@@ -25,7 +26,8 @@ export default function Home() {
 function HeroSection() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-[url('/herobg.webp')] bg-cover bg-center bg-no-repeat min-h-[620px] md:min-h-[720px] flex items-center justify-center"
+      className="relative w-full overflow-hidden bg-cover bg-center bg-no-repeat min-h-[620px] md:min-h-[720px] flex items-center justify-center"
+      style={{ backgroundImage: `url('${asset('/herobg.webp')}')` }}
     >
       <div className="relative z-10 w-full max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
         <span className="inline-block mb-7 px-4 py-2 bg-blue-50 text-slate-800 text-[13px] font-medium tracking-wide rounded-full">
@@ -72,7 +74,7 @@ function WhyWeExistSection() {
       <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-[465px_1fr] gap-10 items-start">
           <img
-            src="/why-we-exist.webp"
+            src={asset('/why-we-exist-v2.webp')}
             alt="JewelBiz on-site training in a jewellery showroom"
             width={465}
             height={550}
@@ -153,7 +155,7 @@ function ProductsSection() {
         'On-premise and cloud',
       ],
       tagClass: 'bg-[#FFF7ED] text-[#9A3412]',
-      image: '/jewelbiz-home-section.webp',
+      image: asset('/jewelbiz-home-section.webp'),
       imageAlt: 'JewelBiz ERP',
       link: '/jewelbiz/',
       linkText: 'Explore JewelBiz',
@@ -175,7 +177,7 @@ function ProductsSection() {
         'WhatsApp API',
       ],
       tagClass: 'bg-[#DBEAFE] text-[#1E40AF]',
-      image: '/curabiz-home-section.webp',
+      image: asset('/curabiz-home-section.webp'),
       imageAlt: 'CuraBiz HIMS',
       link: '/curabiz/',
       linkText: 'Explore CuraBiz',
@@ -195,7 +197,7 @@ function ProductsSection() {
         'Industry-specific workflows',
       ],
       tagClass: 'bg-[#F1F5F9] text-[#334155]',
-      image: '/retailbiz-home-section.webp',
+      image: asset('/retailbiz-home-section.webp'),
       imageAlt: 'RetailBiz ERP',
       link: '/retailbiz/',
       linkText: 'Explore RetailBiz ERP',
@@ -469,32 +471,32 @@ useLayoutEffect(() => {
 function FoundationSection() {
   const cards = [
     {
-      image: '/industry-specific-erp-v2.webp',
+      image: asset('/industry-specific-erp-v2.webp'),
       title: 'Industry-specific ERP',
       desc: 'Purpose-built software for jewellery, healthcare, and specialist retail.',
     },
     {
-      image: '/data-migration.webp',
+      image: asset('/data-migration.webp'),
       title: 'Data migration',
       desc: 'Opening stock, party ledgers, and historical records migrated before go-live.',
     },
     {
-      image: '/empowering-v2.webp',
+      image: asset('/empowering-v2.webp'),
       title: 'On-site training',
       desc: 'Counter staff, accountant, and manager trained by role — included in every deployment.',
     },
     {
-      image: '/always-v2.webp',
+      image: asset('/always-v2.webp'),
       title: 'Dedicated support',
       desc: 'Named account support over phone, email, and WhatsApp when operations cannot wait.',
     },
     {
-      image: '/stay-v2.webp',
+      image: asset('/stay-v2.webp'),
       title: 'Compliance updates',
       desc: 'GST, e-invoice, and HUID regulatory changes tracked and pushed into your system.',
     },
     {
-      image: '/built.webp',
+      image: asset('/built.webp'),
       title: 'Industry-specific ERP',
       desc: 'Purpose-built software for jewellery, healthcare, and specialist retail.',
     },
@@ -573,7 +575,7 @@ function TechnicalSection() {
             </div>
             <div>
               <img
-                src="/technical.webp"
+                src={asset('/technical.webp')}
                 alt="Bank-grade security"
                 loading="lazy"
                 decoding="async"
@@ -720,7 +722,7 @@ function ClientTestimonialsSection() {
                 </p>
                 <div className="flex items-center">
                   {testimonial.logo ? (
-                    <img src={testimonial.logo} alt={testimonial.brand} loading="lazy" decoding="async" width={40} height={40} className="w-10 h-10 rounded-full object-contain border border-slate-100 bg-white p-1" />
+                    <img src={asset(testimonial.logo)} alt={testimonial.brand} loading="lazy" decoding="async" width={40} height={40} className="w-10 h-10 rounded-full object-contain border border-slate-100 bg-white p-1" />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-[#F1F5F9] flex items-center justify-center text-[#0C69B6] font-semibold text-sm">
                       {testimonial.name.charAt(0)}
@@ -743,7 +745,7 @@ function ClientTestimonialsSection() {
                 </p>
                 <div className="flex items-center">
                   {testimonial.logo ? (
-                    <img src={testimonial.logo} alt={testimonial.brand} loading="lazy" decoding="async" width={40} height={40} className="w-10 h-10 rounded-full object-contain border border-slate-100 bg-white p-1" />
+                    <img src={asset(testimonial.logo)} alt={testimonial.brand} loading="lazy" decoding="async" width={40} height={40} className="w-10 h-10 rounded-full object-contain border border-slate-100 bg-white p-1" />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-[#F1F5F9] flex items-center justify-center text-[#0C69B6] font-semibold text-sm">
                       {testimonial.name.charAt(0)}
@@ -1003,7 +1005,7 @@ function StepsSection() {
 
           <div>
             <img
-              src="/three-steps.webp"
+              src={asset('/three-steps.webp')}
               alt="Implementation steps"
               loading="lazy"
               decoding="async"
@@ -1101,7 +1103,8 @@ function FAQSection() {
 function CTASection() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-[url('/herobg.webp')] bg-cover bg-center bg-no-repeat min-h-[620px] md:min-h-[720px] flex items-center justify-center"
+      className="relative w-full overflow-hidden bg-cover bg-center bg-no-repeat min-h-[620px] md:min-h-[720px] flex items-center justify-center"
+      style={{ backgroundImage: `url('${asset('/herobg.webp')}')` }}
     >
       <div className="relative z-10 w-full max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
         <h2 className="font-serif font-normal leading-[1.05] tracking-[-0.02em] text-slate-900">
