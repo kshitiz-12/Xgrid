@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchPublishedPosts, fetchPostBySlug, fetchPostByPublicSlug } from '../lib/blogService';
 import type { BlogPost } from '../types/blog';
 import { checkApiHealth } from '../lib/api';
+import { blogPath } from '../lib/seo';
 
 function withDefaults(post: BlogPost): BlogPost {
   return {
@@ -66,7 +67,7 @@ export function useBlogPostBySlug(slug: string | undefined) {
 
           if (remote) {
             if (remote.slug !== cleanSlug) {
-              setRedirectTo(`/blog/${remote.slug}`);
+              setRedirectTo(blogPath(remote.slug));
             }
             setPost(withDefaults(remote));
             return;

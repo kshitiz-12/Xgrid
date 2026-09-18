@@ -1,5 +1,14 @@
 import crypto from 'crypto';
 import { prisma } from './prisma.js';
+import {
+  cleanBlogSlug,
+  resolvePublishedSlug,
+  normalizeBlogContentLinks,
+  upsertRedirect,
+  ensureDefaultBlogRedirects,
+} from './blogLinks.js';
+
+export { upsertRedirect, ensureDefaultBlogRedirects, cleanBlogSlug };
 
 /** @param {import('@prisma/client').BlogPost} post */
 export function toRecord(post) {
@@ -118,17 +127,38 @@ export async function getPostById(id) {
 }
 
 export async function getPublishedPostBySlug(slug) {
+  const resolved = await resolvePublishedSlug(slug);
+  if (!resolved) return null;
+
   const post = await prisma.blogPost.findFirst({
-    where: { slug, published: true },
+    where: { slug: resolved.slug, published: true },
   });
-  return post ? toRecord(post) : null;
+  if (!post) return null;
+
+  const record = toRecord(post);
+  if (resolved.via !== 'exact') {
+    record._redirect_from = cleanBlogSlug(slug);
+  }
+  return record;
 }
 
 export async function getPublishedPostByBrandSlug(brand, slug) {
+  const clean = cleanBlogSlug(slug);
   const post = await prisma.blogPost.findFirst({
-    where: { brand, slug, published: true },
+    where: { brand, slug: clean, published: true },
   });
-  return post ? toRecord(post) : null;
+  if (post) return toRecord(post);
+
+  // Brand route: still honour aliases/redirects, then verify brand
+  const resolved = await resolvePublishedSlug(clean);
+  if (!resolved) return null;
+  const viaAlias = await prisma.blogPost.findFirst({
+    where: { brand, slug: resolved.slug, published: true },
+  });
+  if (!viaAlias) return null;
+  const record = toRecord(viaAlias);
+  if (resolved.via !== 'exact') record._redirect_from = clean;
+  return record;
 }
 
 export async function ensureUniqueSlug(slug, excludeId = null) {
@@ -149,48 +179,27 @@ export async function ensureUniqueSlug(slug, excludeId = null) {
 
 export async function getRedirect(fromSlug) {
   const redirect = await prisma.blogRedirect.findUnique({
-    where: { fromSlug },
+    where: { fromSlug: cleanBlogSlug(fromSlug) },
   });
   return redirect ? { from: redirect.fromSlug, to: redirect.toSlug } : null;
 }
 
-export async function upsertRedirect(fromSlug, toSlug) {
-  if (!fromSlug || !toSlug || fromSlug === toSlug) return;
-
-  await prisma.blogRedirect.upsert({
-    where: { fromSlug },
-    create: { id: crypto.randomUUID(), fromSlug, toSlug },
-    update: { toSlug },
-  });
-
-  const pointing = await prisma.blogRedirect.findMany({
-    where: { toSlug: fromSlug },
-  });
-
-  await Promise.all(
-    pointing.map((r) =>
-      prisma.blogRedirect.update({
-        where: { id: r.id },
-        data: { toSlug },
-      })
-    )
-  );
-}
-
 export async function deleteRedirectsForSlug(slug) {
+  const clean = cleanBlogSlug(slug);
   await prisma.blogRedirect.deleteMany({
     where: {
-      OR: [{ fromSlug: slug }, { toSlug: slug }],
+      OR: [{ fromSlug: clean }, { toSlug: clean }],
     },
   });
 }
 
 export async function createPost(input) {
   const slug = await ensureUniqueSlug(input.slug);
+  const content = await normalizeBlogContentLinks(input.content);
   const post = await prisma.blogPost.create({
     data: {
       id: crypto.randomUUID(),
-      ...toCreateData({ ...input, slug }),
+      ...toCreateData({ ...input, slug, content }),
     },
   });
   return toRecord(post);
@@ -211,10 +220,12 @@ export async function updatePost(id, input, existing) {
   let publishedAt = existing.published_at ? new Date(existing.published_at) : null;
   if (input.published && !publishedAt) publishedAt = new Date();
 
+  const content = await normalizeBlogContentLinks(input.content);
+
   const post = await prisma.blogPost.update({
     where: { id },
     data: {
-      ...toUpdateData({ ...input, slug }),
+      ...toUpdateData({ ...input, slug, content }),
       previousSlugs,
       publishedAt,
     },

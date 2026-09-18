@@ -61,7 +61,7 @@ export default function BlogPost() {
     );
   }
 
-  if (redirectTo && redirectTo !== `/blog/${slug}`) {
+  if (redirectTo && slug && redirectTo !== blogPath(slug)) {
     return <Navigate to={redirectTo} replace />;
   }
 

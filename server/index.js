@@ -11,6 +11,7 @@ import {
   getPostById,
   getPublishedPostBySlug,
   getPublishedPostByBrandSlug,
+  ensureDefaultBlogRedirects,
   getRedirect,
   createPost,
   updatePost,
@@ -201,6 +202,8 @@ app.use(express.json({ limit: '5mb' }));
 app.get('/api/health', async (_req, res) => {
   try {
     await connectDatabase();
+    // Keep short SEO URLs working after deploys / DB restores
+    ensureDefaultBlogRedirects().catch(() => {});
     res.json({
       ok: true,
       mode: process.env.NODE_ENV === 'production' ? 'production' : 'local',
@@ -274,18 +277,10 @@ app.get('/api/posts', async (req, res) => {
 
 app.get('/api/posts/slug/:slug', async (req, res) => {
   try {
-    const slug = req.params.slug;
-    let post = await getPublishedPostBySlug(slug);
-    if (!post) {
-      const redirect = await getRedirect(slug);
-      if (redirect) {
-        post = await getPublishedPostBySlug(redirect.to);
-        if (post) {
-          res.set('X-Redirect-To', `/blog/${post.slug}`);
-          return res.status(200).json({ ...post, _redirect_from: slug });
-        }
-      }
-      return res.status(404).json({ error: 'Post not found.' });
+    const post = await getPublishedPostBySlug(req.params.slug);
+    if (!post) return res.status(404).json({ error: 'Post not found.' });
+    if (post._redirect_from) {
+      res.set('X-Redirect-To', `/blog/${post.slug}`);
     }
     res.json(post);
   } catch (err) {
