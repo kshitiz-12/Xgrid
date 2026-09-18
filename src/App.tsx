@@ -50,7 +50,9 @@ function MainSite() {
             <Route path="/retailbiz/" element={<XRetailERP />} />
             <Route path="/blogs/" element={<Blogs />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/blog/:slug/" element={<BlogPost />} />
             <Route path="/blogs/:brand/:slug" element={<BlogPost />} />
+            <Route path="/blogs/:brand/:slug/" element={<BlogPost />} />
             <Route path="/terms-of-use" element={<TermsOfUse />} />
             <Route path="/privacy-policy/" element={<PrivacyPolicy />} />
             <Route path="/careers" element={<Careers />} />

@@ -8,7 +8,9 @@ import { blogPath, pickRelatedArticles } from '../lib/seo';
 import { brandDisplayTitle, type Brand } from '../types/blog';
 
 export default function BlogPost() {
-  const { brand, slug } = useParams();
+  const params = useParams();
+  const brand = params.brand;
+  const slug = params.slug?.replace(/\/+$/, '');
   const bySlug = useBlogPostBySlug(brand ? undefined : slug);
   const byBrand = useBlogPost(brand, slug);
   const { post, loading, error } = brand ? byBrand : bySlug;

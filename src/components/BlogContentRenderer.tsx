@@ -1,12 +1,55 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { BlogContent, BlogSection, ContentBlock } from '../types/blog';
 import { isLegacyContent, splitParagraphs } from '../types/blog';
 import { resolveMediaUrl } from '../lib/media';
 import BlogSectionHeader from './blog/BlogSectionHeader';
 import BlogFAQItem from './blog/BlogFAQItem';
+import { blogPath } from '../lib/seo';
 
 const paragraphClass = 'text-slate-600 leading-[1.85] text-[15.5px] md:text-[16.5px] text-justify';
 const paragraphSmClass = 'text-slate-600 leading-[1.85] text-[15.5px] text-justify';
+
+/** Fix /blog/slug/ → /blog/slug so Read Next links match the app route. */
+function normalizeBlogHtml(html: string): string {
+  return html.replace(
+    /(href=["'])(\/blog\/[a-z0-9-]+)\/(["'#?\s>])/gi,
+    '$1$2$3'
+  );
+}
+
+function BlogHtmlBody({ html }: { html: string }) {
+  const navigate = useNavigate();
+  const normalized = normalizeBlogHtml(html);
+
+  const onClick = (e: MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement | null;
+    const anchor = target?.closest?.('a') as HTMLAnchorElement | null;
+    if (!anchor) return;
+
+    const href = anchor.getAttribute('href');
+    if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
+      return;
+    }
+    if (anchor.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    e.preventDefault();
+    if (href.startsWith('/blog/')) {
+      const slug = href.replace(/^\/blog\//, '').replace(/\/+$/, '').split(/[?#]/)[0];
+      navigate(blogPath(slug));
+      return;
+    }
+    navigate(href);
+  };
+
+  return (
+    <div
+      className="blog-html-content prose prose-slate max-w-none"
+      onClick={onClick}
+      dangerouslySetInnerHTML={{ __html: normalized }}
+    />
+  );
+}
 
 function FAQAccordion({ items }: { items: { q: string; a: string }[] }) {
   const [openFaq, setOpenFaq] = useState(0);
@@ -184,10 +227,7 @@ function LegacyRenderer({ blocks }: { blocks: ContentBlock[] }) {
             return block.html?.trim() ? (
               <section key={block.id} className="py-8 md:py-12">
                 <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-                  <div
-                    className="blog-html-content prose prose-slate max-w-none"
-                    dangerouslySetInnerHTML={{ __html: block.html }}
-                  />
+                  <BlogHtmlBody html={block.html} />
                 </div>
               </section>
             ) : null;

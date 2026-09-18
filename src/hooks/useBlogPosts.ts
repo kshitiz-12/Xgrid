@@ -60,11 +60,12 @@ export function useBlogPostBySlug(slug: string | undefined) {
         }
 
         try {
-          const remote = await fetchPostByPublicSlug(slug);
+          const cleanSlug = slug.replace(/\/+$/, '');
+          const remote = await fetchPostByPublicSlug(cleanSlug);
           if (cancelled) return;
 
           if (remote) {
-            if (remote.slug !== slug) {
+            if (remote.slug !== cleanSlug) {
               setRedirectTo(`/blog/${remote.slug}`);
             }
             setPost(withDefaults(remote));

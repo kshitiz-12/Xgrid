@@ -33,7 +33,11 @@ export function absoluteUrl(pathOrUrl: string): string {
 }
 
 export function blogPath(slug: string): string {
-  return `/blog/${slug}`;
+  const clean = String(slug || '')
+    .trim()
+    .replace(/^\/+|\/+$/g, '')
+    .replace(/^blog\//i, '');
+  return `/blog/${clean}`;
 }
 
 export function blogCanonical(slug: string, override?: string): string {
