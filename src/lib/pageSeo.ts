@@ -1,4 +1,5 @@
 import { SITE_URL } from './seo';
+import { JEWELBIZ_FAQ } from '../data/jewelbizFaq';
 import { PRODUCT_DOMAINS, productSite, type ProductSite } from './site';
 
 export type PageSeoConfig = {
@@ -69,11 +70,14 @@ const PAGE_SEO: Record<string, PageSeoConfig> = {
     title: 'ERP Products – Jewellery, Hospital & Retail Software | SlateBiz',
     description:
       'Explore SlateBiz ERP products: JewelBiz for jewellers, CuraBiz for hospitals and clinics, RetailBiz for specialised retail, plus custom ERP for your workflows.',
+    // "Coming soon" placeholder; index once it has real content.
+    noIndex: true,
   },
   '/services': {
     title: 'ERP Implementation, Data Migration & Support Services | SlateBiz',
     description:
       'SlateBiz handles ERP setup, data migration, on-site training, compliance updates and dedicated support so your team goes live without disruption.',
+    noIndex: true,
   },
   '/about-us/': {
     title: 'About SlateBiz Softwares – ERP Software Company, Jaipur',
@@ -89,6 +93,7 @@ const PAGE_SEO: Record<string, PageSeoConfig> = {
     title: 'Retail ERP & Billing Software for Specialised Retail – RetailBiz',
     description:
       'RetailBiz retail ERP for specialised retailers — billing, barcode stock, purchase, GST and multi-store reporting in one system. By SlateBiz, Jaipur.',
+    noIndex: true,
   },
   '/blogs/': {
     title: 'Blog – Jewellery, Hospital & Retail ERP Guides | SlateBiz',
@@ -213,6 +218,19 @@ export function jsonLdForPath(pathname: string): Record<string, unknown> | null 
           url,
           publisher: { '@id': `${SITE_URL}/#organization` },
         },
+        ...(product === 'jewelbiz'
+          ? [
+              {
+                '@type': 'FAQPage',
+                '@id': `${url}#faq`,
+                mainEntity: JEWELBIZ_FAQ.map((item) => ({
+                  '@type': 'Question',
+                  name: item.question,
+                  acceptedAnswer: { '@type': 'Answer', text: item.answer },
+                })),
+              },
+            ]
+          : []),
       ],
     };
   }

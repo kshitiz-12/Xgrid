@@ -128,14 +128,21 @@ function AppRoutes() {
   return <MainSite />;
 }
 
-function App() {
+/** Everything inside the router; the browser and the prerender script supply their own router. */
+export function AppShell() {
   return (
     <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <AppRoutes />
-      </Router>
+      <ScrollToTop />
+      <AppRoutes />
     </AuthProvider>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppShell />
+    </Router>
   );
 }
 

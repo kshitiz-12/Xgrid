@@ -1,6 +1,7 @@
 import { Check, X, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { modules } from '../data/productMatrix';
+import { JEWELBIZ_FAQ } from '../data/jewelbizFaq';
 import ProductRelatedArticles from '../components/ProductRelatedArticles';
 import CompanyLogosSection from '../components/CompanyLogosSection';
 import { Link } from 'react-router-dom';
@@ -16,6 +17,7 @@ export default function XJewelERP() {
       <FeaturesSection />
       <AccreditationSection />
       <ProductRelatedArticles brand="jewelbiz" />
+      <FaqSection />
       <CTASection />
     </div>
   );
@@ -66,8 +68,8 @@ function HeroSection() {
             </h1>
 
             <p className="mx-auto mt-4 max-w-[36rem] text-[clamp(0.875rem,0.8rem+0.4vw,1.05rem)] leading-[1.65] text-[#0C69B6] sm:mt-5">
-              JewelBiz is purpose-built for Indian jewellers — fine weight, purity, Jangad,
-              manufacturing, GST e-invoicing, and multi-branch stock on a single connected system.
+              JewelBiz is jewellery software built in Jaipur for Indian jewellers — fine weight, purity,
+              Jangad, manufacturing, GST e-invoicing, and multi-branch stock on a single connected system.
               Not a generic ERP with jewellery labels.
             </p>
 
@@ -144,8 +146,8 @@ function HeroSection() {
                 maxWidth: '36rem',
               }}
             >
-              JewelBiz is purpose-built for Indian jewellers — fine weight, purity, Jangad,
-              manufacturing, GST e-invoicing, and multi-branch stock on a single connected system.
+              JewelBiz is jewellery software built in Jaipur for Indian jewellers — fine weight, purity,
+              Jangad, manufacturing, GST e-invoicing, and multi-branch stock on a single connected system.
               Not a generic ERP with jewellery labels.
             </p>
 
@@ -559,6 +561,50 @@ function AccreditationSection() {
               maskComposite: 'intersect',
             }}
           />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FaqSection() {
+  return (
+    <section className="w-full bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <span className="mb-6 inline-block rounded-full bg-[#F7F8FC] px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-[#4B5563]">
+            FAQ
+          </span>
+          <h2 className="font-serif font-normal leading-[1.08] tracking-[-0.02em] text-slate-900">
+            <span className="block text-[28px] sm:text-[36px] md:text-[44px]">Jewellery software</span>
+            <span className="block text-[28px] italic text-[#FF641F] sm:text-[36px] md:text-[44px]">
+              questions, answered.
+            </span>
+          </h2>
+          <p className="mt-5 max-w-[420px] text-[14px] leading-[1.7] text-[#4B5563]">
+            Built and supported from Jaipur for jewellers across India. Still unsure?{' '}
+            <Link to="/contact/" className="font-medium text-[#0C69B6] underline-offset-4 hover:underline">
+              Talk to our team
+            </Link>
+            .
+          </p>
+        </div>
+
+        <div className="divide-y divide-slate-200 border-y border-slate-200">
+          {JEWELBIZ_FAQ.map((item, i) => (
+            <details key={item.question} className="group py-5" open={i === 0}>
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
+                <h3 className="font-serif text-[18px] leading-snug text-slate-900 sm:text-[20px]">{item.question}</h3>
+                <ChevronRight
+                  className="mt-1 h-5 w-5 shrink-0 text-[#FF641F] transition-transform duration-300 group-open:rotate-90"
+                  aria-hidden
+                />
+              </summary>
+              <p className="mt-3 max-w-[640px] text-[14px] leading-[1.75] text-[#4B5563] sm:text-[15px]">
+                {item.answer}
+              </p>
+            </details>
+          ))}
         </div>
       </div>
     </section>

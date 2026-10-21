@@ -7,6 +7,24 @@
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
     },
     {
+      "source": "/(sitemap.xml|robots.txt)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/admin/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/(products|services|retailbiz)/?",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/((?!assets/|seo/|robots\\.txt$|sitemap\\.xml$)(?!.*\\.(?:js|css|map|json|txt|xml|webp|png|jpe?g|svg|ico|woff2|mp4|webmanifest)$).+)",
+      "has": [{ "type": "host", "value": "(www\\.)?(jewelbiz|curabiz)\\.in" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
       "source": "/",
       "headers": [
         {
@@ -76,6 +94,12 @@
       "has": [{ "type": "host", "value": "(www\\.)?curabiz\\.in" }],
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.in" }],
+      "destination": "https://www.slatebiz.com/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -108,8 +132,28 @@
       "destination": "/seo/robots-slatebiz.txt"
     },
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "(www\\.)?jewelbiz\\.in" }],
+      "destination": "/_pages/jewelbiz/index.html"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "(www\\.)?curabiz\\.in" }],
+      "destination": "/_pages/curabiz/index.html"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "destination": "/_pages/slatebiz/index.html"
+    },
+    {
+      "source": "/(products|services|about-us|contact|retailbiz|blogs|terms-of-use|privacy-policy|careers|faq)/?",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "destination": "/_pages/slatebiz/$1.html"
+    },
+    {
       "source": "/((?!assets/|api/).*)",
-      "destination": "/index.html"
+      "destination": "/app-shell.html"
     }
   ]
 }

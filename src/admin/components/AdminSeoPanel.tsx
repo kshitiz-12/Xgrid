@@ -153,7 +153,7 @@ export default function AdminSeoPanel(props: Props) {
             value={props.canonicalUrl}
             onChange={(e) => set({ canonicalUrl: e.target.value })}
             className={inputClass()}
-            placeholder="https://slatebiz.com/blog/your-slug"
+            placeholder="https://www.slatebiz.com/blog/your-slug"
           />
         </Field>
       </div>

@@ -1,5 +1,5 @@
 import { StrictMode, Component, type ReactNode, type ErrorInfo } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx';
 import './index.css';
@@ -59,7 +59,8 @@ class ChunkLoadBoundary extends Component<{ children: ReactNode }, { failed: boo
   }
 }
 
-createRoot(document.getElementById('root')!).render(
+const rootEl = document.getElementById('root')!;
+const app = (
   <StrictMode>
     <HelmetProvider>
       <ChunkLoadBoundary>
@@ -68,3 +69,7 @@ createRoot(document.getElementById('root')!).render(
     </HelmetProvider>
   </StrictMode>
 );
+
+// Pages pre-rendered by scripts/prerender.mjs already contain markup; take it over instead of repainting.
+if (rootEl.firstElementChild) hydrateRoot(rootEl, app);
+else createRoot(rootEl).render(app);

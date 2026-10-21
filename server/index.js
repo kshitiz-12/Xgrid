@@ -37,17 +37,14 @@ const ADMIN_USER = {
   name: 'SlateBiz Admin',
 };
 
-const SITE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://slatebiz.com').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || process.env.VITE_SITE_URL || 'https://www.slatebiz.com').replace(/\/$/, '');
 // Served per-domain by vercel.json rewrites; product pages live on jewelbiz.in / curabiz.in.
 const SITEMAP_PATH = path.join(ROOT, 'public', 'seo', 'sitemap-slatebiz.xml');
 
 const STATIC_SITEMAP_PATHS = [
   '/',
-  '/products',
-  '/services',
   '/about-us/',
   '/contact/',
-  '/retailbiz/',
   '/blogs/',
   '/terms-of-use',
   '/privacy-policy/',

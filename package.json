@@ -14,7 +14,7 @@
     "db:studio": "prisma studio",
     "db:seed": "node server/scripts/seed-from-json.js",
     "kill-server": "npx --yes kill-port 3001",
-    "build": "vite build",
+    "build": "node scripts/write-seo-files.mjs && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "lint": "eslint .",
     "preview": "vite preview",

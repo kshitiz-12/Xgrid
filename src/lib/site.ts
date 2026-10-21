@@ -13,8 +13,15 @@ const currentHost =
 /** True on the real public domains; false on localhost and *.vercel.app previews. */
 export const isProductionHost = PRODUCTION_HOSTS.has(currentHost);
 
+/** Set by scripts/prerender.mjs while rendering each domain's HTML at build time. */
+const prerenderSite =
+  typeof window === 'undefined'
+    ? (globalThis as { __PRERENDER_SITE__?: string }).__PRERENDER_SITE__
+    : undefined;
+
 export const productSite: ProductSite | null = (() => {
-  if (currentHost === 'jewelbiz.in' || import.meta.env.VITE_SITE === 'jewelbiz') return 'jewelbiz';
-  if (currentHost === 'curabiz.in' || import.meta.env.VITE_SITE === 'curabiz') return 'curabiz';
+  const forced = prerenderSite ?? import.meta.env.VITE_SITE;
+  if (currentHost === 'jewelbiz.in' || forced === 'jewelbiz') return 'jewelbiz';
+  if (currentHost === 'curabiz.in' || forced === 'curabiz') return 'curabiz';
   return null;
 })();

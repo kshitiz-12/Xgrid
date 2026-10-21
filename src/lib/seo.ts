@@ -1,5 +1,5 @@
 /** Site origin for absolute SEO URLs (no trailing slash). */
-export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://slatebiz.com').replace(/\/$/, '');
+export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://www.slatebiz.com').replace(/\/$/, '');
 
 export const SITE_NAME = 'SlateBiz Softwares';
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/BGDB.webp`;
