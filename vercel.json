@@ -20,11 +20,6 @@
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
     },
     {
-      "source": "/((?!assets/|seo/|robots\\.txt$|sitemap\\.xml$)(?!.*\\.(?:js|css|map|json|txt|xml|webp|png|jpe?g|svg|ico|woff2|mp4|webmanifest)$).+)",
-      "has": [{ "type": "host", "value": "(www\\.)?(jewelbiz|curabiz)\\.in" }],
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
-    },
-    {
       "source": "/",
       "headers": [
         {
@@ -100,6 +95,17 @@
       "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.in" }],
       "destination": "https://www.slatebiz.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/blogs/:brand/:slug/?",
+      "destination": "/blog/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/((?!robots\\.txt$|sitemap\\.xml$|llms\\.txt$)(?!.*\\.(?:js|css|map|json|txt|xml|webp|png|jpe?g|svg|ico|woff2|mp4|webmanifest)$).+)",
+      "has": [{ "type": "host", "value": "(www\\.)?(jewelbiz|curabiz)\\.in" }],
+      "destination": "https://www.slatebiz.com/$1",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -132,6 +138,30 @@
       "destination": "/seo/robots-slatebiz.txt"
     },
     {
+      "source": "/llms.txt",
+      "has": [{ "type": "host", "value": "(www\\.)?jewelbiz\\.in" }],
+      "destination": "/seo/llms-jewelbiz.txt"
+    },
+    {
+      "source": "/llms.txt",
+      "has": [{ "type": "host", "value": "(www\\.)?curabiz\\.in" }],
+      "destination": "/seo/llms-curabiz.txt"
+    },
+    {
+      "source": "/llms.txt",
+      "destination": "/seo/llms-slatebiz.txt"
+    },
+    {
+      "source": "/blog/:slug",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "destination": "/_pages/slatebiz/blog/:slug.html"
+    },
+    {
+      "source": "/blog/:slug/",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "destination": "/_pages/slatebiz/blog/:slug.html"
+    },
+    {
       "source": "/",
       "has": [{ "type": "host", "value": "(www\\.)?jewelbiz\\.in" }],
       "destination": "/_pages/jewelbiz/index.html"
@@ -152,7 +182,16 @@
       "destination": "/_pages/slatebiz/$1.html"
     },
     {
-      "source": "/((?!assets/|api/).*)",
+      "source": "/admin",
+      "destination": "/app-shell.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/app-shell.html"
+    },
+    {
+      "source": "/((?!assets/|api/|seo/).*)",
+      "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }],
       "destination": "/app-shell.html"
     }
   ]

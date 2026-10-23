@@ -3,6 +3,7 @@ import { fetchPublishedPosts, fetchPostBySlug, fetchPostByPublicSlug } from '../
 import type { BlogPost } from '../types/blog';
 import { checkApiHealth } from '../lib/api';
 import { blogPath } from '../lib/seo';
+import { prerenderPost, prerenderPosts } from '../lib/prerenderBlog';
 
 function withDefaults(post: BlogPost): BlogPost {
   return {
@@ -14,8 +15,9 @@ function withDefaults(post: BlogPost): BlogPost {
 }
 
 export function useBlogPosts() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const seeded = prerenderPosts();
+  const [posts, setPosts] = useState<BlogPost[]>(seeded ?? []);
+  const [loading, setLoading] = useState(!seeded?.length);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -35,9 +37,10 @@ export function useBlogPosts() {
 }
 
 export function useBlogPostBySlug(slug: string | undefined) {
-  const [post, setPost] = useState<BlogPost | null>(null);
+  const seeded = prerenderPost(slug);
+  const [post, setPost] = useState<BlogPost | null>(seeded);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!seeded && Boolean(slug));
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export function useBlogPostBySlug(slug: string | undefined) {
     }
 
     let cancelled = false;
-    setLoading(true);
+    if (!seeded) setLoading(true);
     setRedirectTo(null);
     setError('');
 
@@ -56,7 +59,7 @@ export function useBlogPostBySlug(slug: string | undefined) {
         if (cancelled) return;
 
         if (!apiUp) {
-          setPost(null);
+          if (!seeded) setPost(null);
           return;
         }
 
@@ -73,11 +76,13 @@ export function useBlogPostBySlug(slug: string | undefined) {
             return;
           }
 
-          setPost(null);
+          if (!seeded) setPost(null);
         } catch (err) {
           if (cancelled) return;
-          setError(err instanceof Error ? err.message : 'Failed to load post.');
-          setPost(null);
+          if (!seeded) {
+            setError(err instanceof Error ? err.message : 'Failed to load post.');
+            setPost(null);
+          }
         }
       })
       .finally(() => {

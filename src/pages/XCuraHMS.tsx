@@ -54,7 +54,8 @@ const btnMobile = 'h-12 w-full px-5 text-[14px] sm:h-[50px] sm:w-auto sm:min-w-[
 const btnDesktop =
   'h-[clamp(2.875rem,2.4rem+0.5vw,3.75rem)] px-5 text-[clamp(0.875rem,0.8rem+0.15vw,1.05rem)]';
 
-function HeroCopy({ align }: Readonly<{ align: 'center' | 'left' }>) {
+function HeroCopy({ align, heading = true }: Readonly<{ align: 'center' | 'left'; heading?: boolean }>) {
+  const Title = heading ? 'h1' : 'p';
   const centered = align === 'center';
   return (
     <>
@@ -66,7 +67,7 @@ function HeroCopy({ align }: Readonly<{ align: 'center' | 'left' }>) {
         CuraBiz HIMS
       </span>
 
-      <h1
+      <Title
         className={`font-serif font-normal text-slate-900 ${
           centered ? 'mt-4 tracking-[-0.02em] sm:mt-5' : 'mt-[clamp(1rem,1.5vw,1.75rem)] tracking-[-0.025em]'
         }`}
@@ -85,7 +86,7 @@ function HeroCopy({ align }: Readonly<{ align: 'center' | 'left' }>) {
         >
           One patient journey. Registration to discharge.
         </span>
-      </h1>
+      </Title>
 
       <p
         className={`leading-[1.65] text-slate-600 ${
@@ -155,13 +156,12 @@ function HeroSection() {
         <div className="relative min-h-[min(620px,calc(100svh-var(--site-header-height)))] overflow-hidden sm:min-h-[min(680px,calc(100svh-var(--site-header-height)))]">
           <img
             src={asset('/curabiz-hero-bg-mobile.webp')}
-            alt=""
+            alt="CuraBiz hospital management dashboard on a laptop"
             width={1280}
             height={720}
             decoding="async"
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover object-[72%_50%]"
-            aria-hidden
           />
           <div
             className="absolute inset-0 z-[1]"
@@ -180,13 +180,12 @@ function HeroSection() {
       <div className="relative hidden min-h-[min(700px,calc(100svh-var(--site-header-height)))] xl:grid xl:grid-cols-2 2xl:min-h-[min(760px,calc(100svh-var(--site-header-height)))]">
         <img
           src={asset('/curabiz-hero-wide.webp')}
-          alt=""
+          alt="CuraBiz hospital management dashboard on a laptop"
           width={2305}
           height={941}
           decoding="async"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[100%_50%]"
-          aria-hidden
         />
         <div
           className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-1/2"
@@ -203,7 +202,7 @@ function HeroSection() {
           }}
         >
           <div className="w-full max-w-[min(100%,34rem)] 2xl:max-w-[min(100%,38rem)] 3xl:max-w-[min(100%,42rem)] 4xl:max-w-[min(100%,46rem)]">
-            <HeroCopy align="left" />
+            <HeroCopy align="left" heading={false} />
           </div>
         </div>
         <div className="relative z-10" aria-hidden />

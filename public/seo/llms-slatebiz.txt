@@ -1,0 +1,10 @@
+# SlateBiz Softwares
+
+> SlateBiz Softwares is a Jaipur company. It builds JewelBiz jewellery ERP, CuraBiz hospital software, and RetailBiz. Jewellery and hospital articles are published on this site.
+
+## Pages
+- [Home](https://www.slatebiz.com/): ERP software company in Jaipur
+- [JewelBiz](https://www.jewelbiz.in/): Jewellery ERP, GST billing, HUID, karigar and stock
+- [CuraBiz](https://www.curabiz.in/): Hospital management software for clinics and hospitals
+- [Blog](https://www.slatebiz.com/blogs/): Jewellery, hospital and retail guides
+- [Contact](https://www.slatebiz.com/contact/): Book a demo or 14-day trial

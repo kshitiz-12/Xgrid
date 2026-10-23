@@ -16,6 +16,8 @@ export default function RouteSeo() {
   if (!seo) {
     return (
       <Helmet>
+        <title>Page not found | SlateBiz</title>
+        <meta name="robots" content="noindex, nofollow" />
         <link rel="canonical" href={canonical} />
       </Helmet>
     );

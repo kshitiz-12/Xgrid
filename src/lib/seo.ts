@@ -81,6 +81,7 @@ export type SeoSource = {
   updatedAt?: string;
   noIndex?: boolean;
   noFollow?: boolean;
+  faqs?: { q: string; a: string }[];
 };
 
 export type ResolvedSeo = {
@@ -104,10 +105,13 @@ export function resolveSeo(source: SeoSource): ResolvedSeo {
   const title = source.title.trim();
   const excerpt = source.description.trim();
   const slug = source.slug.trim() || slugify(title);
-  const baseTitle = (source.metaTitle || '').trim() || truncateMeta(title, 55);
+  const baseTitle = (source.metaTitle || '').trim() || truncateMeta(title, 60);
+  const withBrand = `${baseTitle} | ${SITE_NAME}`;
   const metaTitle = /slatebiz/i.test(baseTitle)
     ? baseTitle
-    : truncateMeta(`${baseTitle} | ${SITE_NAME}`, 65);
+    : withBrand.length <= 70
+      ? withBrand
+      : truncateMeta(baseTitle, 65);
   const metaDescription =
     (source.metaDescription || '').trim() ||
     truncateMeta(excerpt || source.contentText || title, 155);
@@ -141,7 +145,6 @@ export function resolveSeo(source: SeoSource): ResolvedSeo {
 
 export function buildBlogPostingJsonLd(source: SeoSource, seo: ResolvedSeo) {
   const data: Record<string, unknown> = {
-    '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: seo.metaTitle,
     description: seo.metaDescription,
@@ -179,7 +182,33 @@ export function buildBlogPostingJsonLd(source: SeoSource, seo: ResolvedSeo) {
   if (source.categoryLabel) data.articleSection = source.categoryLabel;
   if (source.tags?.length) data.keywords = source.tags.join(', ');
 
-  return data;
+  const faqs = (source.faqs || []).filter((item) => item.q?.trim() && item.a?.trim());
+  const graph: Record<string, unknown>[] = [
+    data,
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blogs/` },
+        { '@type': 'ListItem', position: 3, name: source.title, item: seo.canonicalUrl },
+      ],
+    },
+  ];
+  if (faqs.length) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': graph,
+  };
 }
 
 export type SeoCheck = {

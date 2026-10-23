@@ -1,0 +1,8 @@
+# CuraBiz
+
+> CuraBiz is hospital management software for clinics, nursing homes and hospitals in India. It is a product of SlateBiz Softwares, Jaipur.
+
+## Pages
+- [CuraBiz](https://www.curabiz.in/): OPD, IPD, e-prescription, pharmacy, lab and billing
+- [Hospital guides](https://www.slatebiz.com/blogs/): HIMS, pharmacy and clinic articles
+- [Book a demo](https://www.slatebiz.com/contact/): Talk to SlateBiz about CuraBiz

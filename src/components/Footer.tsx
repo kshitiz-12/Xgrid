@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Linkedin, Instagram, Facebook } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
+import { PRODUCT_DOMAINS } from '../lib/site';
 
 export default function Footer() {
   return (
@@ -7,9 +8,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-slate-700">
+            <p className="text-base font-semibold uppercase tracking-[0.2em] text-slate-700">
               Company
-            </h2>
+            </p>
             <ul className="mt-4 space-y-2 text-sm text-slate-800">
               <li>
                 <Link to="/about-us/" className="hover:text-black transition-colors">
@@ -40,19 +41,19 @@ export default function Footer() {
           </div>
 
           <div>
-            <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-slate-700">
+            <p className="text-base font-semibold uppercase tracking-[0.2em] text-slate-700">
               Our Products
-            </h2>
+            </p>
             <ul className="mt-4 space-y-2 text-sm text-slate-800">
               <li>
-                <Link to="/jewelbiz/" className="hover:text-black transition-colors">
+                <a href={`${PRODUCT_DOMAINS.jewelbiz}/`} className="hover:text-black transition-colors">
                   JewelBiz
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/curabiz/" className="hover:text-black transition-colors">
+                <a href={`${PRODUCT_DOMAINS.curabiz}/`} className="hover:text-black transition-colors">
                   CuraBiz
-                </Link>
+                </a>
               </li>
               <li>
                 <Link to="/retailbiz/" className="hover:text-black transition-colors">
@@ -68,9 +69,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <h2 className="text-base font-semibold uppercase tracking-[0.2em] text-slate-700">
+            <p className="text-base font-semibold uppercase tracking-[0.2em] text-slate-700">
               Contact
-            </h2>
+            </p>
             <div className="mt-4 space-y-3 text-sm text-slate-800">
               <p>
                 <span className="block text-xs uppercase tracking-[0.2em] text-slate-700">Phone</span>
@@ -99,24 +100,6 @@ export default function Footer() {
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-full bg-white/80 text-slate-700 hover:bg-white transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] rounded-full bg-white/80 text-slate-700 hover:bg-white transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5" />
               </a>
             </div>
           </div>

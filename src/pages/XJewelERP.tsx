@@ -16,7 +16,7 @@ export default function XJewelERP() {
       <ComparisonSection />
       <FeaturesSection />
       <AccreditationSection />
-      <ProductRelatedArticles brand="jewelbiz" />
+      <ProductRelatedArticles brand="jewelbiz" limit={12} />
       <FaqSection />
       <CTASection />
     </div>
@@ -36,13 +36,12 @@ function HeroSection() {
         <div className="relative min-h-[min(560px,calc(100svh-var(--site-header-height)))] overflow-hidden sm:min-h-[min(620px,calc(100svh-var(--site-header-height)))]">
           <img
             src={asset('/jewelbiz-hero-bg-1920-v2.webp')}
-            alt=""
+            alt="JewelBiz jewellery billing and stock dashboard"
             width={1920}
             height={789}
             decoding="async"
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover object-[88%_42%]"
-            aria-hidden
           />
 
           <div
@@ -95,13 +94,12 @@ function HeroSection() {
       <div className="relative hidden min-h-[min(700px,calc(100svh-var(--site-header-height)))] xl:grid xl:grid-cols-2 2xl:min-h-[min(760px,calc(100svh-var(--site-header-height)))]">
         <img
           src={asset('/jewelbiz-hero-bg-v2.webp')}
-          alt=""
+          alt="JewelBiz jewellery billing and stock dashboard"
           width={1956}
           height={804}
           decoding="async"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[100%_45%]"
-          aria-hidden
         />
 
         <div
@@ -124,7 +122,7 @@ function HeroSection() {
               JewelBiz ERP
             </span>
 
-            <h1 className="mt-[clamp(1rem,1.5vw,1.75rem)] font-serif font-normal tracking-[-0.025em] text-slate-900">
+            <p className="mt-[clamp(1rem,1.5vw,1.75rem)] font-serif font-normal tracking-[-0.025em] text-slate-900">
               <span
                 className="block leading-[1.1]"
                 style={{ fontSize: 'clamp(2.125rem, 1.15rem + 1.35vw, 4rem)' }}
@@ -137,7 +135,7 @@ function HeroSection() {
               >
                 And Karigar Operations.
               </span>
-            </h1>
+            </p>
 
             <p
               className="mt-[clamp(1rem,1.4vw,1.75rem)] leading-[1.65] text-[#0C69B6]"

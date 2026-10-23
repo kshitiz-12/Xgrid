@@ -1,7 +1,8 @@
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBlogPosts } from '../hooks/useBlogPosts';
-import { blogPath } from '../lib/seo';
+import { blogPath, SITE_URL } from '../lib/seo';
+import { productSite } from '../lib/site';
 import type { Brand } from '../types/blog';
 
 type ProductTheme = 'orange' | 'blue' | 'navy';
@@ -84,37 +85,49 @@ export default function ProductRelatedArticles({ brand, limit = 3 }: Props) {
         </p>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
-            <Link
-              key={article.id}
-              to={blogPath(article.slug)}
-              className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition hover:shadow-md text-left"
-            >
-              <div className="overflow-hidden rounded-2xl m-3 border border-gray-100">
-                <img
-                  src={article.heroImage}
-                  alt={article.imageAlt || article.title}
-                  className="w-full h-48 object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 p-5 pt-0">
-                <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2">
-                  {article.date} | {article.readTime}
-                </p>
-                <h3 className="text-lg font-bold text-gray-900 uppercase tracking-tight leading-snug">
-                  {article.title}
-                </h3>
-                <p className="mt-2 text-sm text-gray-500 leading-relaxed flex-1">{article.description}</p>
-                <div className="mt-4">
-                  <span
-                    className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${styles.link}`}
-                  >
-                    Read More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </span>
+          {articles.map((article) => {
+            const href = `${SITE_URL}${blogPath(article.slug)}`;
+            const cardClass =
+              'group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition hover:shadow-md text-left';
+            const card = (
+              <>
+                <div className="overflow-hidden rounded-2xl m-3 border border-gray-100">
+                  <img
+                    src={article.heroImage}
+                    alt={article.imageAlt || article.title}
+                    width={640}
+                    height={360}
+                    className="w-full h-48 object-cover"
+                  />
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="flex flex-col flex-1 p-5 pt-0">
+                  <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-2">
+                    {article.date} | {article.readTime}
+                  </p>
+                  <h3 className="text-lg font-bold text-gray-900 uppercase tracking-tight leading-snug">
+                    {article.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-500 leading-relaxed flex-1">{article.description}</p>
+                  <div className="mt-4">
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${styles.link}`}
+                    >
+                      Read {article.title} <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+              </>
+            );
+            return productSite ? (
+              <a key={article.id} href={href} className={cardClass}>
+                {card}
+              </a>
+            ) : (
+              <Link key={article.id} to={blogPath(article.slug)} className={cardClass}>
+                {card}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

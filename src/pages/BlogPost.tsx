@@ -5,7 +5,41 @@ import { useBlogPost, useBlogPostBySlug, useBlogPosts } from '../hooks/useBlogPo
 import BlogContentRenderer from '../components/BlogContentRenderer';
 import SeoHead from '../components/SeoHead';
 import { blogPath, pickRelatedArticles } from '../lib/seo';
-import { brandDisplayTitle, type Brand } from '../types/blog';
+import { brandDisplayTitle, type BlogContent, type Brand } from '../types/blog';
+
+function collectFaqs(content: BlogContent | undefined): { q: string; a: string }[] {
+  const faqs: { q: string; a: string }[] = [];
+  const seen = new Set<string>();
+  const walk = (node: unknown) => {
+    if (!node) return;
+    if (Array.isArray(node)) {
+      node.forEach(walk);
+      return;
+    }
+    if (typeof node !== 'object') return;
+    const record = node as {
+      faqs?: { q?: string; a?: string; question?: string; answer?: string }[];
+      items?: { q?: string; a?: string; question?: string; answer?: string }[];
+      type?: string;
+    };
+    const rows = [
+      ...(Array.isArray(record.faqs) ? record.faqs : []),
+      ...(record.type === 'faq' && Array.isArray(record.items) ? record.items : []),
+    ];
+    for (const row of rows) {
+      const q = String(row?.q || row?.question || '').trim();
+      const a = String(row?.a || row?.answer || '').trim();
+      if (!q || !a || seen.has(q)) continue;
+      seen.add(q);
+      faqs.push({ q, a });
+    }
+    for (const value of Object.values(record)) {
+      if (value && typeof value === 'object') walk(value);
+    }
+  };
+  walk(content);
+  return faqs;
+}
 
 export default function BlogPost() {
   const params = useParams();
@@ -114,6 +148,7 @@ export default function BlogPost() {
           updatedAt: post.updatedAt,
           noIndex: !post.published,
           noFollow: false,
+          faqs: collectFaqs(post.content),
         }}
         includeJsonLd={Boolean(post.published)}
       />
@@ -173,6 +208,8 @@ export default function BlogPost() {
           <img
             src={post.heroImage}
             alt={post.imageAlt || post.title}
+            width={1600}
+            height={900}
             className="w-full aspect-[16/9] object-cover object-center block"
           />
         </div>

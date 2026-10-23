@@ -1,0 +1,8 @@
+# JewelBiz
+
+> JewelBiz is jewellery ERP and billing software for retail, wholesale and manufacturing jewellers in India. It is a product of SlateBiz Softwares, Jaipur. Guides are published on slatebiz.com.
+
+## Pages
+- [JewelBiz](https://www.jewelbiz.in/): Jewellery software, GST billing, HUID, karigar job work and multi-branch stock
+- [Jewellery guides](https://www.slatebiz.com/blogs/): Billing, inventory, GST, karigar and showroom articles
+- [Book a demo](https://www.slatebiz.com/contact/): 14-day trial and on-site setup from Jaipur

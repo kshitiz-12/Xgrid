@@ -177,7 +177,10 @@ function organizationNode() {
       name: PRODUCT_INFO[key].name,
       url: `${PRODUCT_DOMAINS[key]}/`,
     })),
-    sameAs: Object.values(PRODUCT_DOMAINS).map((url) => `${url}/`),
+    sameAs: [
+      ...Object.values(PRODUCT_DOMAINS).map((url) => `${url}/`),
+      'https://www.linkedin.com/company/slatebiz/',
+    ],
   };
 }
 

@@ -10,12 +10,37 @@ import { blogPath } from '../lib/seo';
 const paragraphClass = 'text-slate-600 leading-[1.85] text-[15.5px] md:text-[16.5px] text-justify';
 const paragraphSmClass = 'text-slate-600 leading-[1.85] text-[15.5px] text-justify';
 
-/** Fix /blog/slug/ → /blog/slug so Read Next links match the app route. */
+/** Landing pages that were never built. Send them to the live product. */
+const RETIRED_PATHS: Record<string, string> = {
+  '/hospital-management-software': 'https://www.curabiz.in/',
+  '/ehr-software-india': 'https://www.curabiz.in/',
+  '/pharmacy-management-software': 'https://www.curabiz.in/',
+  '/abdm-compliant-hospital-software': 'https://www.curabiz.in/',
+  '/nabh-compliant-hospital-management-software': 'https://www.curabiz.in/',
+  '/e-prescription-software': 'https://www.curabiz.in/',
+  '/opd-ipd-management-software': 'https://www.curabiz.in/',
+  '/hospital-billing-software': 'https://www.curabiz.in/',
+  '/clinic-management-software': 'https://www.curabiz.in/',
+  '/doctor-appointment-scheduling-software': 'https://www.curabiz.in/',
+  '/jewelbiz-demo': 'https://www.jewelbiz.in/',
+};
+
+/** Fix blog hrefs, point dead landing pages at the live product, and keep a single page H1. */
 function normalizeBlogHtml(html: string): string {
-  return html.replace(
+  let next = html.replace(
     /(href=["'])(\/blog\/[a-z0-9-]+)\/(["'#?\s>])/gi,
     '$1$2$3'
   );
+  next = next.replace(/href=(["'])(\/[^"'#?]+)\/?\1/gi, (full, quote, path: string) => {
+    const target = RETIRED_PATHS[path.replace(/\/+$/, '')];
+    return target ? `href=${quote}${target}${quote}` : full;
+  });
+  next = next.replace(/<h1(\s|>)/gi, '<h2$1').replace(/<\/h1>/gi, '</h2>');
+  next = next.replace(/<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, '');
+  next = next.replace(/<title[^>]*>[\s\S]*?<\/title>/gi, '');
+  next = next.replace(/<meta[^>]*(?:name=["'](?:description|robots|twitter:[^"']+)["']|property=["']og:[^"']+["'])[^>]*>/gi, '');
+  next = next.replace(/<link[^>]*rel=["']canonical["'][^>]*>/gi, '');
+  return next;
 }
 
 function BlogHtmlBody({ html }: { html: string }) {

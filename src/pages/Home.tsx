@@ -405,10 +405,10 @@ function TechnicalSection() {
           </span>
           <h2 className="font-sans font-medium leading-[1.1] tracking-[-0.01em] text-[#171717]">
             <span className="block text-[31px] whitespace-normal md:whitespace-nowrap">
-              Built on the same stack
+              Security, offline billing,
             </span>
             <span className="block text-[29px] font-medium italic text-[#FF641F] whitespace-normal md:whitespace-nowrap">
-              India&apos;s banks use
+              and compliance
             </span>
           </h2>
         </div>

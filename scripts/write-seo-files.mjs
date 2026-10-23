@@ -123,8 +123,54 @@ await writeFile(path.join(seoDir, 'sitemap-slatebiz.xml'), urlset([...slatebizUr
 await writeFile(path.join(seoDir, 'sitemap-jewelbiz.xml'), urlset([`${ORIGIN.jewelbiz}/`]));
 await writeFile(path.join(seoDir, 'sitemap-curabiz.xml'), urlset([`${ORIGIN.curabiz}/`]));
 
+function llmsTxt({ title, summary, pages }) {
+  return [`# ${title}`, '', `> ${summary}`, '', '## Pages', ...pages.map((page) => `- [${page.title}](${page.url}): ${page.note}`), ''].join('\n');
+}
+
 await writeFile(path.join(seoDir, 'robots-slatebiz.txt'), robots(`${ORIGIN.slatebiz}/sitemap.xml`));
 await writeFile(path.join(seoDir, 'robots-jewelbiz.txt'), robots(`${ORIGIN.jewelbiz}/sitemap.xml`));
 await writeFile(path.join(seoDir, 'robots-curabiz.txt'), robots(`${ORIGIN.curabiz}/sitemap.xml`));
+
+await writeFile(
+  path.join(seoDir, 'llms-slatebiz.txt'),
+  llmsTxt({
+    title: 'SlateBiz Softwares',
+    summary:
+      'SlateBiz Softwares is a Jaipur company. It builds JewelBiz jewellery ERP, CuraBiz hospital software, and RetailBiz. Jewellery and hospital articles are published on this site.',
+    pages: [
+      { title: 'Home', url: `${ORIGIN.slatebiz}/`, note: 'ERP software company in Jaipur' },
+      { title: 'JewelBiz', url: `${ORIGIN.jewelbiz}/`, note: 'Jewellery ERP, GST billing, HUID, karigar and stock' },
+      { title: 'CuraBiz', url: `${ORIGIN.curabiz}/`, note: 'Hospital management software for clinics and hospitals' },
+      { title: 'Blog', url: `${ORIGIN.slatebiz}/blogs/`, note: 'Jewellery, hospital and retail guides' },
+      { title: 'Contact', url: `${ORIGIN.slatebiz}/contact/`, note: 'Book a demo or 14-day trial' },
+    ],
+  })
+);
+await writeFile(
+  path.join(seoDir, 'llms-jewelbiz.txt'),
+  llmsTxt({
+    title: 'JewelBiz',
+    summary:
+      'JewelBiz is jewellery ERP and billing software for retail, wholesale and manufacturing jewellers in India. It is a product of SlateBiz Softwares, Jaipur. Guides are published on slatebiz.com.',
+    pages: [
+      { title: 'JewelBiz', url: `${ORIGIN.jewelbiz}/`, note: 'Jewellery software, GST billing, HUID, karigar job work and multi-branch stock' },
+      { title: 'Jewellery guides', url: `${ORIGIN.slatebiz}/blogs/`, note: 'Billing, inventory, GST, karigar and showroom articles' },
+      { title: 'Book a demo', url: `${ORIGIN.slatebiz}/contact/`, note: '14-day trial and on-site setup from Jaipur' },
+    ],
+  })
+);
+await writeFile(
+  path.join(seoDir, 'llms-curabiz.txt'),
+  llmsTxt({
+    title: 'CuraBiz',
+    summary:
+      'CuraBiz is hospital management software for clinics, nursing homes and hospitals in India. It is a product of SlateBiz Softwares, Jaipur.',
+    pages: [
+      { title: 'CuraBiz', url: `${ORIGIN.curabiz}/`, note: 'OPD, IPD, e-prescription, pharmacy, lab and billing' },
+      { title: 'Hospital guides', url: `${ORIGIN.slatebiz}/blogs/`, note: 'HIMS, pharmacy and clinic articles' },
+      { title: 'Book a demo', url: `${ORIGIN.slatebiz}/contact/`, note: 'Talk to SlateBiz about CuraBiz' },
+    ],
+  })
+);
 
 console.log(`seo files written: slatebiz ${slatebizUrls.length + blogs.length} urls, jewelbiz 1, curabiz 1`);
