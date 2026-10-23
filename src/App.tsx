@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import RouteSeo from './components/RouteSeo';
 import { AuthProvider } from './context/AuthContext';
+import NotFound from './pages/NotFound';
 
 const Home = lazy(() => import('./pages/Home'));
 const Products = lazy(() => import('./pages/Products'));
@@ -83,6 +84,7 @@ function MainSite() {
             <Route path="/privacy-policy/" element={<PrivacyPolicy />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
