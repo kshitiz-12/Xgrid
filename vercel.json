@@ -15,7 +15,12 @@
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     },
     {
-      "source": "/(products|services|retailbiz)/?",
+      "source": "/:page(products|services|retailbiz)",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
+    },
+    {
+      "source": "/:page(products|services|retailbiz)/",
       "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, follow" }]
     },
@@ -97,7 +102,12 @@
       "permanent": true
     },
     {
-      "source": "/blogs/:brand/:slug/?",
+      "source": "/blogs/:brand/:slug",
+      "destination": "/blog/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/blogs/:brand/:slug/",
       "destination": "/blog/:slug",
       "permanent": true
     },
@@ -177,9 +187,14 @@
       "destination": "/_pages/slatebiz/index.html"
     },
     {
-      "source": "/(products|services|about-us|contact|retailbiz|blogs|terms-of-use|privacy-policy|careers|faq)/?",
+      "source": "/:page(products|services|about-us|contact|retailbiz|blogs|terms-of-use|privacy-policy|careers|faq)",
       "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
-      "destination": "/_pages/slatebiz/$1.html"
+      "destination": "/_pages/slatebiz/:page.html"
+    },
+    {
+      "source": "/:page(products|services|about-us|contact|retailbiz|blogs|terms-of-use|privacy-policy|careers|faq)/",
+      "has": [{ "type": "host", "value": "(www\\.)?slatebiz\\.com" }],
+      "destination": "/_pages/slatebiz/:page.html"
     },
     {
       "source": "/admin",
