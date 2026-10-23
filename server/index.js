@@ -261,7 +261,11 @@ app.get('/api/auth/me', authMiddleware, (req, res) => {
 app.get('/api/posts', async (req, res) => {
   try {
     if (req.query.published === 'true') {
-      return res.json(await listPosts({ publishedOnly: true }));
+      const posts = await listPosts({ publishedOnly: true });
+      if (req.query.fields === 'summary') {
+        return res.json(posts.map((post) => ({ ...post, content: [] })));
+      }
+      return res.json(posts);
     }
     return authMiddleware(req, res, async () => {
       res.json(await listPosts());

@@ -32,8 +32,12 @@ export type BlogPostInput = {
   no_follow: boolean;
 };
 
+const PUBLIC_TIMEOUT_MS = 12000;
+
 export async function fetchPublishedPosts(): Promise<BlogPost[]> {
-  const data = await apiFetch<BlogPostRecord[]>('/posts?published=true');
+  const data = await apiFetch<BlogPostRecord[]>('/posts?published=true&fields=summary', {
+    timeoutMs: PUBLIC_TIMEOUT_MS,
+  });
   return data.map(recordToPost);
 }
 
@@ -44,7 +48,9 @@ export async function fetchAllPosts(): Promise<BlogPost[]> {
 
 export async function fetchPostByPublicSlug(slug: string): Promise<BlogPost | null> {
   try {
-    const data = await apiFetch<BlogPostRecord>(`/posts/slug/${encodeURIComponent(slug)}`);
+    const data = await apiFetch<BlogPostRecord>(`/posts/slug/${encodeURIComponent(slug)}`, {
+      timeoutMs: PUBLIC_TIMEOUT_MS,
+    });
     return recordToPost(data);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) return null;
@@ -54,7 +60,9 @@ export async function fetchPostByPublicSlug(slug: string): Promise<BlogPost | nu
 
 export async function fetchPostBySlug(brand: Brand, slug: string): Promise<BlogPost | null> {
   try {
-    const data = await apiFetch<BlogPostRecord>(`/posts/by-slug/${brand}/${slug}`);
+    const data = await apiFetch<BlogPostRecord>(`/posts/by-slug/${brand}/${slug}`, {
+      timeoutMs: PUBLIC_TIMEOUT_MS,
+    });
     return recordToPost(data);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) return null;

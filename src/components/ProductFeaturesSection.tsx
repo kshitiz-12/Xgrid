@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import type { ProductModule } from '../data/productMatrix';
+import { MODULE_ARTICLES } from '../data/moduleArticles';
+import { SITE_URL, blogPath } from '../lib/seo';
 
 type FeatureTheme = 'orange' | 'blue';
 
@@ -44,7 +46,7 @@ export default function ProductFeaturesSection({
   const Icon = module.icon;
 
   return (
-    <section id={sectionId} className="w-full bg-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+    <section id={sectionId} className="w-full scroll-mt-header bg-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[1200px] mx-auto">
         <div className="mb-8 sm:mb-12 max-w-2xl">
           {kicker ? (
@@ -125,15 +127,27 @@ export default function ProductFeaturesSection({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {module.features.map((feature) => (
-                <div
-                  key={feature.title}
-                  className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-sm transition"
-                >
-                  <h4 className="text-sm font-semibold text-slate-900">{feature.title}</h4>
-                  <p className="text-[13px] text-slate-500 mt-1 leading-relaxed">{feature.description}</p>
-                </div>
-              ))}
+              {module.features.map((feature) => {
+                const slug = MODULE_ARTICLES[feature.title];
+                return (
+                  <div
+                    key={feature.title}
+                    className="flex flex-col bg-white border border-gray-100 rounded-xl p-5 hover:shadow-sm transition"
+                  >
+                    <h4 className="text-sm font-semibold text-slate-900">{feature.title}</h4>
+                    <p className="text-[13px] text-slate-500 mt-1 leading-relaxed">{feature.description}</p>
+                    {slug ? (
+                      <a
+                        href={`${SITE_URL}${blogPath(slug)}`}
+                        className={`mt-3 inline-flex items-center gap-1 text-[13px] font-semibold ${styles.icon} hover:underline`}
+                      >
+                        Read more
+                        <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                      </a>
+                    ) : null}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

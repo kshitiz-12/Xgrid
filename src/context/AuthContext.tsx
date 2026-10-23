@@ -4,7 +4,6 @@ import {
   clearToken,
   getToken,
   setToken,
-  checkApiHealth,
   checkApiConfigured,
   getApiBase,
   onUnauthorized,
@@ -47,6 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const onAdmin = window.location.pathname.startsWith('/admin');
+    if (!onAdmin) {
+      setLoading(false);
+      setApiChecking(false);
+      return;
+    }
     void refreshApiHealth().then(async (ready) => {
       const token = getToken();
       if (!token) {

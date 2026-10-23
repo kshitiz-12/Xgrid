@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchPublishedPosts, fetchPostBySlug, fetchPostByPublicSlug } from '../lib/blogService';
 import type { BlogPost } from '../types/blog';
-import { checkApiHealth } from '../lib/api';
 import { blogPath } from '../lib/seo';
 import { prerenderPost, prerenderPosts } from '../lib/prerenderBlog';
 
@@ -21,16 +20,22 @@ export function useBlogPosts() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    checkApiHealth()
-      .then(async (ok) => {
-        if (!ok) return;
-        const remote = await fetchPublishedPosts();
-        setPosts(remote.map(withDefaults));
+    let cancelled = false;
+    fetchPublishedPosts()
+      .then((remote) => {
+        if (!cancelled) setPosts(remote.map(withDefaults));
       })
       .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Could not load blog posts.');
+        if (!cancelled && !seeded?.length) {
+          setError(err instanceof Error ? err.message : 'Could not load blog posts.');
+        }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { posts, loading, error };
@@ -54,36 +59,21 @@ export function useBlogPostBySlug(slug: string | undefined) {
     setRedirectTo(null);
     setError('');
 
-    checkApiHealth()
-      .then(async (apiUp) => {
+    fetchPostByPublicSlug(slug.replace(/\/+$/, ''))
+      .then((remote) => {
         if (cancelled) return;
-
-        if (!apiUp) {
-          if (!seeded) setPost(null);
+        if (remote) {
+          const cleanSlug = slug.replace(/\/+$/, '');
+          if (remote.slug !== cleanSlug) setRedirectTo(blogPath(remote.slug));
+          setPost(withDefaults(remote));
           return;
         }
-
-        try {
-          const cleanSlug = slug.replace(/\/+$/, '');
-          const remote = await fetchPostByPublicSlug(cleanSlug);
-          if (cancelled) return;
-
-          if (remote) {
-            if (remote.slug !== cleanSlug) {
-              setRedirectTo(blogPath(remote.slug));
-            }
-            setPost(withDefaults(remote));
-            return;
-          }
-
-          if (!seeded) setPost(null);
-        } catch (err) {
-          if (cancelled) return;
-          if (!seeded) {
-            setError(err instanceof Error ? err.message : 'Failed to load post.');
-            setPost(null);
-          }
-        }
+        if (!seeded) setPost(null);
+      })
+      .catch((err) => {
+        if (cancelled || seeded) return;
+        setError(err instanceof Error ? err.message : 'Failed to load post.');
+        setPost(null);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -110,24 +100,14 @@ export function useBlogPost(brand: string | undefined, slug: string | undefined)
 
     let cancelled = false;
 
-    checkApiHealth()
-      .then(async (apiUp) => {
+    fetchPostBySlug(brand as BlogPost['brand'], slug)
+      .then((remote) => {
+        if (!cancelled) setPost(remote ? withDefaults(remote) : null);
+      })
+      .catch((err) => {
         if (cancelled) return;
-
-        if (!apiUp) {
-          setPost(null);
-          return;
-        }
-
-        try {
-          const remote = await fetchPostBySlug(brand as BlogPost['brand'], slug);
-          if (cancelled) return;
-          setPost(remote ? withDefaults(remote) : null);
-        } catch (err) {
-          if (cancelled) return;
-          setError(err instanceof Error ? err.message : 'Failed to load post.');
-          setPost(null);
-        }
+        setError(err instanceof Error ? err.message : 'Failed to load post.');
+        setPost(null);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

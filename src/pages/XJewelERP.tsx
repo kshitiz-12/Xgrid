@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { modules } from '../data/productMatrix';
 import { JEWELBIZ_FAQ } from '../data/jewelbizFaq';
 import ProductRelatedArticles from '../components/ProductRelatedArticles';
+import ProductFeaturesSection from '../components/ProductFeaturesSection';
 import CompanyLogosSection from '../components/CompanyLogosSection';
 import { Link } from 'react-router-dom';
 import { asset } from '../lib/asset';
@@ -14,7 +15,14 @@ export default function XJewelERP() {
       <CompanyLogosSection />
       <BusinessModelSectionWithImages />
       <ComparisonSection />
-      <FeaturesSection />
+      <ProductFeaturesSection
+        sectionId="features"
+        modules={modules}
+        theme="orange"
+        kicker="Complete feature map"
+        headingLead="Every JewelBiz module,"
+        subtitle="Capabilities drawn from the JewelBiz product matrix — organised by how jewellery businesses actually run. Ask for a demo to see which modules fit your showroom."
+      />
       <AccreditationSection />
       <ProductRelatedArticles brand="jewelbiz" limit={12} />
       <FaqSection />
@@ -252,100 +260,6 @@ function ComparisonSection() {
     </section>
   );
 }
-
-function FeaturesSection() {
-  const [active, setActive] = useState(0);
-
-  const module = modules[active];
-  const Icon = module.icon;
-
-  return (
-    <section id="features" className="w-full bg-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 scroll-mt-header">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="mb-8 sm:mb-12 max-w-2xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400 mb-3">
-            Complete feature map
-          </p>
-          <h2 className="font-serif font-normal text-[32px] sm:text-[40px] md:text-[48px] leading-[1.1] tracking-[-0.02em] text-slate-900">
-            <span className="block">Every JewelBiz module,</span>
-            <span className="block italic text-[#FF641F]">listed clearly.</span>
-          </h2>
-          <p className="mt-4 text-slate-500 text-[15px] leading-relaxed">
-            Capabilities drawn from the JewelBiz product matrix — organised by how jewellery businesses actually run. Ask for a demo to see which modules fit your showroom.
-          </p>
-        </div>
-
-        <div className="lg:hidden -mx-4 px-4 mb-8 overflow-x-auto">
-          <div className="flex gap-2 w-max pb-1">
-            {modules.map((m, i) => (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => setActive(i)}
-                className={`shrink-0 min-h-[40px] px-4 py-2 rounded-full text-sm font-semibold transition ${
-                  i === active ? 'bg-[#FF641F] text-white' : 'bg-slate-100 text-slate-700'
-                }`}
-              >
-                {m.title}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
-          <div className="hidden lg:flex flex-col gap-1">
-            {modules.map((m, i) => {
-              const isActive = i === active;
-              return (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  className={`group w-full flex items-center gap-3 px-4 py-3.5 rounded-lg text-left transition min-h-[48px] ${
-                    isActive
-                      ? 'bg-[#FF641F] text-white shadow-md'
-                      : 'text-slate-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <span className={`text-xs font-medium ${isActive ? 'text-white/80' : 'text-slate-400'}`}>
-                    {m.number}
-                  </span>
-                  <span className="text-sm font-semibold">{m.title}</span>
-                  {isActive && <ChevronRight className="w-4 h-4 ml-auto" />}
-                </button>
-              );
-            })}
-          </div>
-
-          <div key={module.id} className="transition-all duration-300">
-            <div className="mb-8 sm:mb-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-md mb-4">
-                <Icon className="w-4 h-4 text-[#FF641F]" />
-                <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-800">{module.title}</span>
-              </div>
-              <h3 className="text-[20px] sm:text-[24px] md:text-[28px] font-semibold text-slate-900 leading-snug">{module.description}</h3>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {module.features.map((feature, i) => (
-                <div
-                  key={i}
-                  className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-sm transition"
-                >
-                  <h4 className="text-sm font-semibold text-slate-900">{feature.title}</h4>
-                  <p className="text-[13px] text-slate-500 mt-1 leading-relaxed">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-
 
 function BusinessModelSectionWithImages() {
   const cards = [

@@ -122,12 +122,12 @@ export async function wakeApiServer(): Promise<boolean> {
   return checkApiHealth();
 }
 
-export async function checkApiHealth(): Promise<boolean> {
+export async function checkApiHealth(options?: { attempts?: number; timeoutMs?: number }): Promise<boolean> {
   const configured = await checkApiConfigured();
   if (!configured) return false;
 
-  const attempts = import.meta.env.PROD ? 5 : 1;
-  const timeoutMs = import.meta.env.PROD ? 90000 : 5000;
+  const attempts = options?.attempts ?? (import.meta.env.PROD ? 5 : 1);
+  const timeoutMs = options?.timeoutMs ?? (import.meta.env.PROD ? 90000 : 5000);
 
   for (let i = 0; i < attempts; i += 1) {
     try {
