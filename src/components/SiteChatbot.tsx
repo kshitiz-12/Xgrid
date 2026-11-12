@@ -87,11 +87,12 @@ export default function SiteChatbot() {
       setLead(res.lead);
       setIntent(res.intent);
       setStep(res.step);
-      setHistory([
+      const nextHistory: ChatTurn[] = [
         ...prior,
         { role: 'user', content: text },
         { role: 'assistant', content: res.reply },
-      ].slice(-24));
+      ].slice(-24);
+      setHistory(nextHistory);
       setMessages((m) => [...m, { id: uid(), role: 'bot', text: res.reply }]);
       setTyping(false);
       busyRef.current = false;
@@ -120,7 +121,7 @@ export default function SiteChatbot() {
           role="dialog"
           aria-label="Chat with SlateBiz AI"
         >
-          <header className="flex items-center justify-between gap-2 bg-black px-3 py-2.5">
+          <header className="flex items-center justify-between gap-2 border-b border-slate-200 bg-white px-3 py-2.5">
             <img
               src={asset('/services/slatebiz-ai-wordmark.png')}
               alt="SlateBiz AI — Business Chatbot"
@@ -130,7 +131,7 @@ export default function SiteChatbot() {
               type="button"
               aria-label="Close chat"
               onClick={() => setOpen(false)}
-              className="shrink-0 p-1 text-white/70 transition-colors hover:text-[#FF8A4C]"
+              className="shrink-0 rounded-full p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#FF641F]"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                 <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
@@ -222,7 +223,7 @@ export default function SiteChatbot() {
           setOpen((v) => !v);
           setHint(false);
         }}
-        className="flex h-[56px] w-[56px] items-center justify-center overflow-hidden rounded-full bg-black text-white shadow-[0_10px_28px_rgba(11,28,44,0.35)] ring-4 ring-white/80 transition-transform hover:scale-105 sm:h-16 sm:w-16"
+        className="flex h-[56px] w-[56px] items-center justify-center overflow-hidden rounded-full bg-white text-slate-700 shadow-[0_10px_28px_rgba(11,28,44,0.28)] ring-4 ring-white transition-transform hover:scale-105 sm:h-16 sm:w-16"
       >
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">

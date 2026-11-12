@@ -75,9 +75,9 @@ const PAGE_SEO: Record<string, PageSeoConfig> = {
     noIndex: true,
   },
   '/services': {
-    title: 'Hospital Websites, Apps, Ecommerce & Chatbots | SlateBiz Services',
+    title: 'Websites, Apps, Chatbots & WhatsApp Automation | SlateBiz Services',
     description:
-      'SlateBiz builds hospital websites and apps, ecommerce and branding sites, chatbots, plus ERP implementation and support from Jaipur.',
+      'SlateBiz builds hospital websites and apps, ecommerce and branding sites, chatbots, Aura Connect WhatsApp automation, plus ERP implementation from Jaipur.',
   },
   '/about-us/': {
     title: 'About Us | ERP Software Company in Jaipur – SlateBiz Softwares',

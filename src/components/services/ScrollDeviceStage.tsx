@@ -117,8 +117,9 @@ export default function ScrollDeviceStage({
             {href ? (
               <a
                 href={href}
-                target="_blank"
-                rel="noreferrer"
+                {...(href.startsWith('http')
+                  ? { target: '_blank', rel: 'noreferrer' }
+                  : {})}
                 className={`mt-8 inline-flex min-h-[48px] items-center justify-center rounded-[10px] px-5 text-[13px] font-semibold transition-colors ${
                   dark
                     ? 'bg-white text-slate-900 hover:bg-slate-100'
@@ -184,7 +185,9 @@ export default function ScrollDeviceStage({
       <DeviceExpandOverlay
         open={expand === 'laptop'}
         mode="laptop"
-        title={`${eyebrow} · website`}
+        title={
+          id === 'whatsapp' ? `${eyebrow} · CRM` : `${eyebrow} · website`
+        }
         urlLabel={urlLabel}
         onClose={() => setExpand(null)}
       >
@@ -194,7 +197,9 @@ export default function ScrollDeviceStage({
       <DeviceExpandOverlay
         open={expand === 'phone'}
         mode="phone"
-        title={`${eyebrow} · app`}
+        title={
+          id === 'whatsapp' ? `${eyebrow} · WhatsApp` : `${eyebrow} · app`
+        }
         onClose={() => setExpand(null)}
         phoneDesignWidth={phoneDesignWidth ?? 390}
       >
